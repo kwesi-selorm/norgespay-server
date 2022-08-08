@@ -11,9 +11,7 @@
     "dev": "ts-node-dev index.ts",
     "lint": "eslint --ext .ts .",
     "postinstall": "tsc",
-    "watch-node": "nodemon dist/index.js",
-    "watch-ts": "tsc -w",
-    "deploy": "git add . && git commit -m Heroku && git push heroku master"
+    "deploy": "git add . && git push heroku master"
   },
   "keywords": [],
   "author": "",
