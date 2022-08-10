@@ -19,7 +19,7 @@ salarySchema.set("toJSON", {
   transform: (_document, returnedObject) => {
     returnedObject.id = returnedObject._id.toString();
     // returnedObject.createdAt = returnedObject.createdAt.toLocaleString();
-    returnedObject.updatedAt = returnedObject.updatedAt.toLocaleString();
+    returnedObject.updatedAt = returnedObject.updatedAt.toLocaleString("no");
     delete returnedObject._id;
     delete returnedObject.__v;
   },
