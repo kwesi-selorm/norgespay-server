@@ -1,9 +1,19 @@
+import cors from "cors";
 import "dotenv/config";
+import { AppError } from "./classes/AppError";
 
-const corsOptions = {
-  origin: "*",
-  credentials: true, //access-control-allow-credentials:true
-  optionSuccessStatus: 200,
+const allowedOrigins = ["http://localhost:3000", "https://norgespay.netlify.app/", "/thunderclient.com$/"];
+
+const corsOptions: cors.CorsOptions = {
+  origin: function (origin, callback) {
+    if (allowedOrigins.indexOf(origin as string) != -1) {
+      callback(null, true);
+    } else {
+      callback(new AppError("Request origin not allowed by CORS"));
+    }
+  },
+  credentials: true, // SETS ACCESS-CONTROL-ALLOW-CREDENTIALS TO TRUE
+  optionsSuccessStatus: 200,
 };
 
 const SECRET = process.env.SECRET as string;
