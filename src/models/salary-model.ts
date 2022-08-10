@@ -12,7 +12,7 @@ const salarySchema = new Schema(
     sector: String,
     user: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
   },
-  { timestamps: true }
+  { timestamps: true },
 );
 
 salarySchema.set("toJSON", {

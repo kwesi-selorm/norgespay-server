@@ -47,20 +47,12 @@ salaryRouter.put("/:id", async (req, res, next) => {
     const populatedExistingSalary = await existingSalary?.populate("user");
     if (existingSalary) {
       if (existingSalary.previousSalaries.includes(updatedSalaryAmount)) {
-        return next(
-          new AppError(
-            "Update not processed. The submitted salary already exists in the database",
-            400
-          )
-        );
+        return next(new AppError("Update not processed. The submitted salary already exists in the database", 400));
       }
       const authorizedUserId = populatedExistingSalary?.user?._id.toString() as string;
       if (authorizedUserId !== userId) {
         return next(
-          new AppError(
-            "Unauthorized to update salary; users may only update salaries that they have added",
-            401
-          )
+          new AppError("Unauthorized to update salary; users may only update salaries that they have added", 401),
         );
       }
 
@@ -68,8 +60,10 @@ salaryRouter.put("/:id", async (req, res, next) => {
         const updates = {
           salary: updatedSalaryAmount,
           previousSalaries: existingSalary.previousSalaries.concat(updatedSalaryAmount),
+          updatedAt: new Date(),
         };
-        await Salary.findOneAndUpdate({ _id: id }, updates);
+
+        await Salary.findOneAndUpdate({ _id: id }, updates, { new: true, timestamps: false });
         return res.sendStatus(200); //status: OK
       } catch (error: unknown) {
         if (error instanceof Error) return next(new AppError(error.message, 400));
@@ -117,13 +111,13 @@ salaryRouter.post("/", async (req, res, next) => {
       }
     }
 
-    //SALARY ENTRY EXISTS WITH THE SAME SALARY AMOUNT FOR THE GIVEN EXPERIENCE
-    if (existingSalary && existingSalary.salary === salary) {
+    // SALARY ENTRY EXISTS WITH THE SAME SALARY AMOUNT FOR THE GIVEN EXPERIENCE
+    if (existingSalary && existingSalary.previousSalaries.includes(salary)) {
       next(new AppError("Sorry, the provided salary entry already exists", 401));
     }
 
-    //SALARY ENTRY EXISTS WITH A DIFFERENT SALARY AMOUNT
-    if (existingSalary && existingSalary.salary !== salary) {
+    // SALARY ENTRY EXISTS BUT WITHOUT THE SUBMITTED SALARY AMOUNT
+    if (existingSalary && !existingSalary.previousSalaries.includes(salary)) {
       const updatedPreviousSalaries = existingSalary.previousSalaries.concat(salary);
       try {
         await Salary.findOneAndUpdate(
@@ -131,7 +125,9 @@ salaryRouter.post("/", async (req, res, next) => {
           {
             salary: salary,
             previousSalaries: updatedPreviousSalaries,
-          }
+            updatedAt: new Date(),
+          },
+          { new: true, timestamps: false },
         );
         return res.status(201).json({ success: "Salary updated" });
       } catch (error) {
@@ -141,7 +137,7 @@ salaryRouter.post("/", async (req, res, next) => {
   }
 });
 
-//FIND SINGLE SALARY//
+// FIND SINGLE SALARY//
 salaryRouter.get("/:id", async (req, res, next) => {
   const result = idParser(req.params.id, next);
   if (result) {
