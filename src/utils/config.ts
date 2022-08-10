@@ -2,11 +2,11 @@ import cors from "cors";
 import "dotenv/config";
 import { AppError } from "./classes/AppError";
 
-const allowedOrigins = ["http://localhost:3000", "https://norgespay.netlify.app", "/thunderclient.com$/"];
+const allowedOrigins = ["http://localhost:3000", "https://norgespay.netlify.app"];
 
 const corsOptions: cors.CorsOptions = {
   origin: function (origin, callback) {
-    if (allowedOrigins.indexOf(origin as string) != -1) {
+    if (allowedOrigins.indexOf(origin as string) != -1 || !origin) {
       callback(null, true);
     } else {
       callback(new AppError("Request origin not allowed by CORS"));
