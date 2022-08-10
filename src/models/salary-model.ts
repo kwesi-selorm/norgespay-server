@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
 const { Schema } = mongoose;
+import { add } from "date-fns";
 
 const salarySchema = new Schema(
   {
@@ -19,7 +20,7 @@ salarySchema.set("toJSON", {
   transform: (_document, returnedObject) => {
     returnedObject.id = returnedObject._id.toString();
     // returnedObject.createdAt = returnedObject.createdAt.toLocaleString();
-    returnedObject.updatedAt = returnedObject.updatedAt.toLocaleString();
+    returnedObject.updatedAt = add(returnedObject.updatedAt, { hours: 2 }).toLocaleString();
     delete returnedObject._id;
     delete returnedObject.__v;
   },
