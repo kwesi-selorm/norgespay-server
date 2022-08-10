@@ -2,7 +2,7 @@ import cors from "cors";
 import "dotenv/config";
 import { AppError } from "./classes/AppError";
 
-const allowedOrigins = ["http://localhost:3000", "https://norgespay.netlify.app/", "/thunderclient.com$/"];
+const allowedOrigins = ["http://localhost:3000", "https://norgespay.netlify.app", "/thunderclient.com$/"];
 
 const corsOptions: cors.CorsOptions = {
   origin: function (origin, callback) {
