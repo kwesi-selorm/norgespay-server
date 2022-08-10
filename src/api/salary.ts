@@ -125,7 +125,7 @@ salaryRouter.post("/", async (req, res, next) => {
           {
             salary: salary,
             previousSalaries: updatedPreviousSalaries,
-            updatedAt: new Date(),
+            updatedAt: new Date().toLocaleString(),
           },
           { new: true, timestamps: false },
         );
