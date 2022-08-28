@@ -7,6 +7,7 @@ import session, { SessionOptions } from "express-session";
 const allowedOrigins = [
     "http://localhost:3000",
     "https://norgespay.netlify.app",
+    "https://norgespay-client.onrender.com/",
 ];
 
 const corsOptions: cors.CorsOptions = {
@@ -49,4 +50,3 @@ const sessionOptions: SessionOptions = {
 };
 
 export { corsOptions, PORT, DEV_MONGO_URI, PROD_MONGO_URI, sessionOptions };
-
