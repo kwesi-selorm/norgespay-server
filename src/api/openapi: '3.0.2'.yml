@@ -1,0 +1,47 @@
+openapi: "3.0.2"
+info:
+  title: norgesPAY
+  version: "1.0"
+  description: Norwegian salaries API
+  contact:
+    email: adorkor.jeffery@gmail.com
+servers:
+  - url: http://localhost:3001/
+paths:
+  /api/salaries/homepage:
+    get:
+      tags:
+        - "Homepage salary"
+      responses:
+        "200":
+          description: OK
+  /api/auth/login:
+    post:
+      tags:
+        - "Login and authenticate"
+      parameters:
+        [
+          {
+            name: "username",
+            in: path,
+            required: true,
+            schema: { type: string },
+          },
+          {
+            name: "password",
+            in: path,
+            required: true,
+            schema: { type: string },
+          },
+        ]
+      responses:
+        "200":
+          description: OK,
+
+  /api/salaries/all:
+    get:
+      tags:
+        - "All salaries"
+      responses:
+        "200":
+          description: All salaries returned successfully
