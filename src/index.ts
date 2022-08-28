@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+"use strict";
 import cookieParser from "cookie-parser";
 import cors from "cors";
 import "dotenv/config"; // see https://github.com/motdotla/dotenv#how-do-i-use-dotenv-with-import
@@ -6,6 +7,7 @@ import express from "express";
 import session from "express-session";
 import mongoose, { ConnectOptions } from "mongoose";
 import morgan from "morgan";
+import serverless from "serverless-http";
 import contributorRouter from "./api/contributors";
 import loginRouter from "./api/login";
 import logoutRouter from "./api/logout";
@@ -18,6 +20,8 @@ import {
     PORT,
     sessionOptions,
 } from "./utils/config";
+
+const router = express.Router();
 
 const app = express();
 
@@ -43,6 +47,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(session(sessionOptions));
+app.use("/.netlify/functions/server", router); // path must route to lambda
 
 // ROUTES
 app.use("/api/auth/login", loginRouter);
@@ -57,3 +62,6 @@ app.use(errorHandler);
 app.listen(PORT, () => {
     console.log(`Listening on port ${PORT}`);
 });
+
+module.exports = app;
+module.exports.handler = serverless(app);
