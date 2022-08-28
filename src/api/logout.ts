@@ -9,7 +9,7 @@ logoutRouter.post("/", (req, res) => {
         secure: false,
         maxAge: 30 * 1000,
         httpOnly: true,
-        sameSite: "lax",
+        sameSite: "none",
     }).send();
 });
 
