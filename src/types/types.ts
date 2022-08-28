@@ -1,5 +1,3 @@
-import { ValidationErrorItem } from "joi";
-
 export type DBSalary = {
   jobTitle: string;
   company: string;
@@ -58,23 +56,8 @@ export interface SignUpRequest {
   };
 }
 
-export interface SingleSalaryRequest {
-  params: {
-    id: unknown;
-  };
+export interface SessionUser {
+  username: string;
+  id: string;
+  contributed: boolean;
 }
-
-//RESPONSE
-export type Response = {
-  status: (arg0: number) => {
-    (): unknown;
-    new (): unknown;
-    json: { (arg0: unknown): void; new (): unknown };
-  };
-  json: { (arg0: unknown): void; new (): unknown };
-  sendStatus: (arg0: number) => void;
-  send: {
-    (arg0: { message: string | ValidationErrorItem[] }): void;
-    new (): unknown;
-  };
-};
