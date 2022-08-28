@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import MongoDBStore from "connect-mongodb-session";
 import cors from "cors";
 import "dotenv/config";
@@ -27,10 +28,16 @@ const DEV_MONGO_URI = process.env.DEV_MONGO_URI as string;
 const PROD_MONGO_URI = process.env.PROD_MONGO_URI as string;
 
 const mongoStore = MongoDBStore(session);
-const store = new mongoStore({ collection: "sessions", uri: DEV_MONGO_URI });
+const store = new mongoStore({
+    collection: "sessions",
+    uri: DEV_MONGO_URI,
+    databaseName: "dummyDatabase",
+});
+store.on("error", (err: any) => console.log(err));
+
 const sessionOptions: SessionOptions = {
     secret: process.env.SESSION_SECRET as string,
-    resave: false,
+    resave: true,
     saveUninitialized: true,
     store: store,
     cookie: {
