@@ -43,9 +43,10 @@ const sessionOptions: SessionOptions = {
     cookie: {
         secure: false,
         maxAge: 30 * 60 * 1000, // 10s dev, 30m prod
-        sameSite: "lax",
+        sameSite: "none",
         httpOnly: true,
     },
 };
 
 export { corsOptions, PORT, DEV_MONGO_URI, PROD_MONGO_URI, sessionOptions };
+

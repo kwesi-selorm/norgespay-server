@@ -7,7 +7,6 @@ import express from "express";
 import session from "express-session";
 import mongoose, { ConnectOptions } from "mongoose";
 import morgan from "morgan";
-import serverless from "serverless-http";
 import contributorRouter from "./api/contributors";
 import loginRouter from "./api/login";
 import logoutRouter from "./api/logout";
@@ -21,11 +20,9 @@ import {
     sessionOptions,
 } from "./utils/config";
 
-const router = express.Router();
-
 const app = express();
 
-if (process.env.NODE_ENV === "production") {
+if (app.get("env") === "production") {
     app.set("trust proxy", 1);
     if (sessionOptions.cookie) {
         sessionOptions.cookie.sameSite = "none";
@@ -50,7 +47,6 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(session(sessionOptions));
-app.use("/.netlify/functions/server", router); // path must route to lambda
 
 // ROUTES
 app.use("/api/auth/login", loginRouter);
@@ -67,4 +63,3 @@ app.listen(PORT, () => {
 });
 
 module.exports = app;
-module.exports.handler = serverless(app);
