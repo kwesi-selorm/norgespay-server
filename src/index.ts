@@ -1,5 +1,4 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-"use strict";
 import cookieParser from "cookie-parser";
 import cors from "cors";
 import "dotenv/config"; // see https://github.com/motdotla/dotenv#how-do-i-use-dotenv-with-import
@@ -26,7 +25,6 @@ if (app.get("env") === "production") {
     app.set("trust proxy", 1);
     if (sessionOptions.cookie) {
         sessionOptions.cookie.sameSite = "none";
-        sessionOptions.cookie.secure = true;
     }
 }
 

@@ -44,7 +44,7 @@ const sessionOptions: SessionOptions = {
     cookie: {
         secure: false,
         maxAge: 30 * 60 * 1000, // 10s dev, 30m prod
-        sameSite: "none",
+        sameSite: "lax",
         httpOnly: true,
     },
 };

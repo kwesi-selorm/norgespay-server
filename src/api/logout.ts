@@ -7,7 +7,7 @@ logoutRouter.post("/", (req, res) => {
     if (!cookies["connect.sid"]) return res.sendStatus(204);
     res.clearCookie("connect.sid", {
         secure: false,
-        maxAge: 30 * 1000,
+        maxAge: 30 * 60 * 1000,
         httpOnly: true,
         sameSite: "none",
     }).send();
