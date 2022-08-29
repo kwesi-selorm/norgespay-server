@@ -25,6 +25,7 @@ if (app.get("env") === "production") {
     app.set("trust proxy", 1);
     if (sessionOptions.cookie) {
         sessionOptions.cookie.sameSite = "none";
+        sessionOptions.cookie.secure = true;
     }
 }
 
