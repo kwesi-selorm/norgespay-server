@@ -24,38 +24,18 @@ salariesRouter.get(
 );
 
 //UPDATE SELECTED SALARY//
-/* 
-This is a route handler for updating a salary. It is using the `updateSalaryParser` function to
-parse the request body and return an object with the `id`, `updatedSalaryAmount` and `userId`
-properties. It then uses the `id` property to find the salary in the database. If the salary exists,
-it checks if the `updatedSalaryAmount` is already in the `previousSalaries` array. If it is, it
-returns an error. If it is not, it checks if the `userId` matches the `userId` of the salary. If it
-does not, it returns an error. If it does, it updates the salary with the `updatedSalaryAmount` and
-adds it to the `previousSalaries` array. 
-*/
 salariesRouter.put("/:id", async (req, res, next) => {
     const result = updateSalaryParser(req, next);
     if (result) {
-        const { id, updatedSalaryAmount, userId } = result;
+        const { id, updatedSalaryAmount } = result;
 
         const existingSalary = await Salary.findById({ _id: id });
-        const populatedExistingSalary = await existingSalary?.populate("user");
         if (existingSalary) {
             if (existingSalary.previousSalaries.includes(updatedSalaryAmount))
                 return next(
                     new AppError(
                         "Update not processed. The submitted salary already exists in the database",
                         400,
-                    ),
-                );
-
-            const authorizedUserId =
-                populatedExistingSalary?.user?._id.toString() as string;
-            if (authorizedUserId !== userId)
-                return next(
-                    new AppError(
-                        "Unauthorized to update salary; users may only update salaries that they have added",
-                        401,
                     ),
                 );
 
