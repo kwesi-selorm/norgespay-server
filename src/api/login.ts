@@ -49,7 +49,7 @@ loginRouter.post(
             };
 
             req.session.user = authUser;
-            console.log(req.session);
+            // console.log(req.session);
             res.json(authUser);
         } catch (error) {
             if (error instanceof Error)
