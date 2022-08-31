@@ -15,7 +15,6 @@ import {
     newSalarySchema,
     signUpSchema,
     updatedSalarySchema,
-    userIdSchema,
 } from "./utils/joi-schemas";
 
 /* Async function error handling: Pass error instance to next function for handling, 
@@ -44,9 +43,6 @@ export function updateSalaryParser(
     const { error: idError, value: _id } = idSchema.validate(req.params.id);
     const { error: updatedSalaryError, value: updatedSalary } =
         updatedSalarySchema.validate(req.body.updatedSalary);
-    const { error: userIdError, value: user } = userIdSchema.validate(
-        req.body.userId,
-    );
 
     //HANDLE VALIDATION ERRORS
     if (idError) {
@@ -57,15 +53,11 @@ export function updateSalaryParser(
         next(new AppError(updatedSalaryError.details[0].message, 400));
         return;
     }
-    if (userIdError) {
-        next(new AppError(userIdError.details[0].message, 400));
-        return;
-    }
 
     const id: string = _id;
     const updatedSalaryAmount: number = updatedSalary;
-    const userId: string = user;
-    return { id, updatedSalaryAmount, userId };
+
+    return { id, updatedSalaryAmount };
 }
 
 //LOGIN INPUT//
